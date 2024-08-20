@@ -25,7 +25,14 @@ nlsy <- read_csv(here::here("data", "raw", "nlsy.csv"),
 
 # Customization of `tbl_summary()`
 
+@tbl-one contains a table 
+
+There were `r 3+4` participants
+
+
 ```{r}
+#| label: tbl-one
+#| tbl-cap: "This is a great table"
 tbl_summary(
   nlsy,
   by = sex_cat,
@@ -36,8 +43,7 @@ tbl_summary(
 
 This is the number of people in the data
 ```{r}
-nrow()
-
+nrow(nlsy)
 ```
 
 ```{r}
@@ -64,3 +70,47 @@ tbl_summary(
   include = c(sex_cat, race_eth_cat, region_cat,
               eyesight_cat, glasses, age_bir))
 ```
+
+#storing as object (mean or median- just need to replace one with the other )
+```{r}
+median_sleep_weekends<-median(nlsy$sleep_wknd, na.rm = TRUE)
+
+```
+
+#inline text
+The average number of hours of sleep on weekends is `r median_sleep_weekends`.
+
+
+#inline text
+The average number of hours of sleep on weekends is `r median(nlsy$sleep_wknd, na.rm = TRUE)`
+
+
+#dif table two to play with
+
+```{r}
+#| label: tbl-two 
+#| tbl-cap: "This is a great table"
+table2<-tbl_summary(
+  nlsy,
+  by = sex_cat,
+  include = c(sex_cat, race_eth_cat, region_cat,
+              eyesight_cat, glasses, age_bir, sleep_wknd)) |>
+	
+	add_overall() #adds overall combining Male and Female 
+
+table2
+```
+
+
+
+
+```{r}
+sleep_wknd_f<-inline_text(table2, variable="sleep_wknd", column= "stat_0")
+
+inline_text(table2, variable="sleep_wknd", column= "stat_0")
+
+```
+
+The median number of hours of sleep and the IQR on weekends in the overall sample is `r sleep_wknd_f`.
+
+
